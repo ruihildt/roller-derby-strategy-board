@@ -17,11 +17,21 @@
 
 	function handleResize() {
 		if (!container) return;
-		const { width, height } = calculateCanvasSize(container.clientWidth, container.clientHeight);
-		canvas.width = width;
-		canvas.height = height;
-		highResCanvas.width = width * 2;
-		highResCanvas.height = height * 2;
+
+		const dimensions = calculateCanvasSize(container.clientWidth, container.clientHeight);
+
+		// Set display size (css pixels)
+		canvas.style.width = `${dimensions.styleWidth}px`;
+		canvas.style.height = `${dimensions.styleHeight}px`;
+
+		// Set actual size in memory (scaled for HD displays)
+		canvas.width = dimensions.bufferWidth;
+		canvas.height = dimensions.bufferHeight;
+
+		// High resolution canvas (2x)
+		highResCanvas.width = dimensions.bufferWidth * 2;
+		highResCanvas.height = dimensions.bufferHeight * 2;
+
 		game?.resize();
 	}
 
@@ -44,17 +54,19 @@
 	}
 </script>
 
-<div bind:this={container}>
-	<canvas bind:this={canvas}></canvas>
+<div bind:this={container} class="canvas-container">
+	<canvas bind:this={canvas} style="width: 100%; height: 100%; display: block;"></canvas>
 	<canvas bind:this={highResCanvas} style="display: none;"></canvas>
 	<AboutPage />
 	<RecordingControls {highResCanvas} recordingComplete={handleRecordingComplete} />
 </div>
 
 <style>
-	div {
+	.canvas-container {
 		width: 100%;
 		height: 100%;
 		position: relative;
+		display: flex;
+		justify-content: center;
 	}
 </style>

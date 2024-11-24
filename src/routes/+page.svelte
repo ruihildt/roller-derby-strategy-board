@@ -17,22 +17,32 @@
 </script>
 
 <main>
-	<BoardCanvas recordingComplete={handleRecordingComplete} />
+	<div class="container">
+		<BoardCanvas recordingComplete={handleRecordingComplete} />
 
-	{#if showPreview && recordedBlob}
-		<VideoPreview videoBlob={recordedBlob} close={handlePreviewClose} />
-	{/if}
+		{#if showPreview && recordedBlob}
+			<VideoPreview videoBlob={recordedBlob} close={handlePreviewClose} />
+		{/if}
+	</div>
 </main>
 
 <style>
+	:global(body) {
+		overflow: hidden;
+	}
+
 	main {
+		width: 100%;
+		height: 100dvh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.container {
 		aspect-ratio: 3/2;
 		max-width: 1200px;
 		width: 100%;
-		max-height: 100vh;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
+		max-height: 100dvh;
 	}
 </style>

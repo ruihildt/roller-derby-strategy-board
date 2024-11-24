@@ -14,16 +14,27 @@ export function distance(point1: Point, point2: Point): number {
 
 export function calculateCanvasSize(
 	containerWidth: number,
-	containerHeight: number
-): { width: number; height: number } {
+	containerHeight: number,
+	pixelRatio: number = window.devicePixelRatio
+): {
+	styleWidth: number;
+	styleHeight: number;
+	bufferWidth: number;
+	bufferHeight: number;
+} {
 	const aspectRatio = 100 / 66;
-	let width = containerWidth;
-	let height = containerWidth / aspectRatio;
+	let styleWidth = containerWidth;
+	let styleHeight = containerWidth / aspectRatio;
 
-	if (height > containerHeight) {
-		height = containerHeight;
-		width = containerHeight * aspectRatio;
+	if (styleHeight > containerHeight) {
+		styleHeight = containerHeight;
+		styleWidth = containerHeight * aspectRatio;
 	}
 
-	return { width, height };
+	return {
+		styleWidth,
+		styleHeight,
+		bufferWidth: styleWidth * pixelRatio,
+		bufferHeight: styleHeight * pixelRatio
+	};
 }
